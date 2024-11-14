@@ -11,9 +11,11 @@ import { Event } from 'src/events/entities/event.entity';
 export class ParticipantsService {
   constructor(
     @InjectRepository(Participant)
-    private participantRepository: Repository<Participant>
-  ){}
-  async create(createParticipantDto: CreateParticipantDto) {
+    private participantRepository: Repository<Participant>,
+  ) {}
+  
+  async create(createParticipantDto: CreateParticipantDto, UserId: number) {
+    createParticipantDto.user_id = UserId;
     const participant = await this.participantRepository.create(createParticipantDto);
     return this.participantRepository.save(participant);
   }
@@ -25,31 +27,24 @@ export class ParticipantsService {
   }
 
   async findOne(id: number) {
-    return this.participantRepository.findOneByOrFail({id});
+    return this.participantRepository.findOneOrFail({
+      where: { id },
+      relations: ['user', 'event'],
+    });
   }
 
   async update(id: number, updateParticipantDto: UpdateParticipantDto) {
-    const participant = await this.participantRepository.findOne({ where: { id }, relations: ['user', 'event'] });
-  
-    if (!participant) {
+    const result = await this.participantRepository.update(
+      id,
+      updateParticipantDto,
+    );
+
+    if (result.affected === 0) {
       throw new Error(`Participant with id ${id} not found`);
     }
-  
-    if (updateParticipantDto.user_id) {
-      participant.user = { id: updateParticipantDto.user_id } as User;
-    }
-    if (updateParticipantDto.event_id) {
-      participant.event = { id: updateParticipantDto.event_id } as Event;
-    }
-  
-    if (updateParticipantDto.type) {
-      participant.type = updateParticipantDto.type;
-    }
-  
-    await this.participantRepository.save(participant);
+
     return this.participantRepository.findOne({ where: { id } });
   }
-  
 
   async remove(id: number) {
     this.participantRepository.delete(id);

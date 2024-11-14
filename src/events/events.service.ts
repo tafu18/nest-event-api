@@ -9,8 +9,8 @@ import { Repository } from 'typeorm';
 export class EventsService {
   constructor(
     @InjectRepository(Event)
-    private eventRepository: Repository<Event>
-  ){}
+    private eventRepository: Repository<Event>,
+  ) {}
 
   async create(createEventDto: CreateEventDto) {
     const event = await this.eventRepository.create(createEventDto);
@@ -23,17 +23,17 @@ export class EventsService {
   }
 
   async findOne(id: number) {
-    return this.eventRepository.findOneByOrFail({id});
+    return this.eventRepository.findOneByOrFail({ id });
   }
 
   async update(id: number, updateEventDto: UpdateEventDto) {
     const result = await this.eventRepository.update(id, updateEventDto);
 
-    if(result.affected === 0){
+    if (result.affected === 0) {
       throw new Error(`User with id ${id} not found`);
     }
 
-    return this.eventRepository.findOneBy({id});
+    return this.eventRepository.findOneBy({ id });
   }
 
   async remove(id: number) {

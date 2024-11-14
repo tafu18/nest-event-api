@@ -8,7 +8,7 @@ import { User } from 'src/users/entities/user.entity';
 import { UsersModule } from 'src/users/users.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Participant, Event, User]), UsersModule], 
+  imports: [TypeOrmModule.forFeature([Participant, Event, User]), UsersModule],
   controllers: [EventsController],
   providers: [EventsService],
   exports: [EventsService, TypeOrmModule],

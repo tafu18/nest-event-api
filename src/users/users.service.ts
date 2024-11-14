@@ -4,14 +4,14 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
-
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
-  ){}
+  ) {}
 
   async create(createUserDto: CreateUserDto) {
     const user = this.userRepository.create(createUserDto);
@@ -24,17 +24,21 @@ export class UsersService {
   }
 
   async findOne(id: number) {
-    return this.userRepository.findOneByOrFail({id});
+    return this.userRepository.findOneByOrFail({ id });
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {
+    if (updateUserDto.password) {
+      updateUserDto.password = await bcrypt.hash(updateUserDto.password, 10);
+    }
+  
     const result = await this.userRepository.update(id, updateUserDto);
-
+  
     if (result.affected === 0) {
       throw new Error(`User with id ${id} not found`);
     }
-        
-    return this.userRepository.findOneBy({id});
+  
+    return this.userRepository.findOneBy({ id });
   }
 
   async remove(id: number) {
@@ -42,7 +46,7 @@ export class UsersService {
     return `This action removes a #${id} user`;
   }
 
-  async findByEmail(email: string){
-    return this.userRepository.findOneBy({email});
+  async findByEmail(email: string) {
+    return this.userRepository.findOneBy({ email });
   }
 }

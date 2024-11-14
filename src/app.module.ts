@@ -23,7 +23,7 @@ import { JwtModule } from '@nestjs/jwt';
     }),
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
-      type: process.env.DB_TYPE as 'mysql', 
+      type: process.env.DB_TYPE as 'mysql',
       host: process.env.DB_HOST,
       port: Number(process.env.DB_PORT),
       username: process.env.DB_USERNAME,
@@ -37,7 +37,7 @@ import { JwtModule } from '@nestjs/jwt';
     ParticipantsModule,
     CompaniesModule,
     EventsModule,
-    AuthModule
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

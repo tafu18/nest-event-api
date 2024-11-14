@@ -9,7 +9,7 @@ import { Repository } from 'typeorm';
 export class CompaniesService {
   constructor(
     @InjectRepository(Company)
-    private companyRepository: Repository<Company>
+    private companyRepository: Repository<Company>,
   ) {}
   async create(createCompanyDto: CreateCompanyDto) {
     const company = this.companyRepository.create(createCompanyDto);
@@ -21,7 +21,7 @@ export class CompaniesService {
   }
 
   async findOne(id: number) {
-    return this.companyRepository.findOneBy({id});
+    return this.companyRepository.findOneBy({ id });
   }
 
   async update(id: number, updateCompanyDto: UpdateCompanyDto) {
@@ -30,7 +30,7 @@ export class CompaniesService {
     if (result.affected === 0) {
       throw new Error(`Company with id ${id} not found`);
     }
-  
+
     return this.companyRepository.findOneBy({ id });
   }
 

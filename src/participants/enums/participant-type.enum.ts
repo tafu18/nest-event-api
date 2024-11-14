@@ -1,4 +1,4 @@
 export enum ParticipantType {
-    ONLINE = 'online',
-    PHYSICAL = 'physical',
-  }
+  ONLINE = 'online',
+  PHYSICAL = 'physical',
+}

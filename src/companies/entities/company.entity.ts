@@ -1,5 +1,12 @@
 import { User } from 'src/users/entities/user.entity';
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, UpdateDateColumn, CreateDateColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToMany,
+  UpdateDateColumn,
+  CreateDateColumn,
+} from 'typeorm';
 import { Transform } from 'class-transformer';
 import { format } from 'date-fns';
 
@@ -15,10 +22,14 @@ export class Company {
   users: User[];
 
   @CreateDateColumn({ type: 'timestamp' })
-  @Transform(({ value }) => format(new Date(value), 'dd.MM.yyyy HH:mm:ss'), { toPlainOnly: true })
+  @Transform(({ value }) => format(new Date(value), 'dd.MM.yyyy HH:mm:ss'), {
+    toPlainOnly: true,
+  })
   createdAt: Date;
 
   @UpdateDateColumn({ type: 'timestamp' })
-  @Transform(({ value }) => format(new Date(value), 'dd.MM.yyyy HH:mm:ss'), { toPlainOnly: true })
+  @Transform(({ value }) => format(new Date(value), 'dd.MM.yyyy HH:mm:ss'), {
+    toPlainOnly: true,
+  })
   updatedAt: Date;
 }

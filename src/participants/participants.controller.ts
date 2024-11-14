@@ -1,4 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+  Request,
+} from '@nestjs/common';
 import { ParticipantsService } from './participants.service';
 import { CreateParticipantDto } from './dto/create-participant.dto';
 import { UpdateParticipantDto } from './dto/update-participant.dto';
@@ -10,8 +20,11 @@ export class ParticipantsController {
   constructor(private readonly participantsService: ParticipantsService) {}
 
   @Post()
-  async create(@Body() createParticipantDto: CreateParticipantDto, @Request() req) {
-    return this.participantsService.create(createParticipantDto);
+  create(
+    @Body() createParticipantDto: CreateParticipantDto,
+    @Request() req,
+  ) {
+    return this.participantsService.create(createParticipantDto, req.user.userId);
   }
 
   @Get()
@@ -25,7 +38,10 @@ export class ParticipantsController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateParticipantDto: UpdateParticipantDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateParticipantDto: UpdateParticipantDto,
+  ) {
     return this.participantsService.update(+id, updateParticipantDto);
   }
 
