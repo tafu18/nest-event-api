@@ -13,7 +13,7 @@ export class EntityNotFoundExceptionFilter implements ExceptionFilter {
     // Entity ismini düzgün şekilde formatla (ilk harf büyük olacak)
     const formattedEntityName =
       entityName.charAt(0).toUpperCase() + entityName.slice(1).toLowerCase();
-
+    console.log(exception.message);
     response.status(404).json({
       statusCode: 404,
       message: `${formattedEntityName} not found with the provided ID`, // Dinamik hata mesajı

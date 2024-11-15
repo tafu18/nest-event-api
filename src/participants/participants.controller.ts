@@ -20,11 +20,12 @@ export class ParticipantsController {
   constructor(private readonly participantsService: ParticipantsService) {}
 
   @Post()
-  create(
-    @Body() createParticipantDto: CreateParticipantDto,
-    @Request() req,
-  ) {
-    return this.participantsService.create(createParticipantDto, req.user.userId);
+  create(@Body() createParticipantDto: CreateParticipantDto, @Request() req) {
+    console.log(req.user);
+    return this.participantsService.create(
+      createParticipantDto,
+      req.user.userId,
+    );
   }
 
   @Get()

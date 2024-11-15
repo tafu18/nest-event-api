@@ -31,13 +31,13 @@ export class UsersService {
     if (updateUserDto.password) {
       updateUserDto.password = await bcrypt.hash(updateUserDto.password, 10);
     }
-  
+
     const result = await this.userRepository.update(id, updateUserDto);
-  
+
     if (result.affected === 0) {
       throw new Error(`User with id ${id} not found`);
     }
-  
+
     return this.userRepository.findOneBy({ id });
   }
 

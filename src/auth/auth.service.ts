@@ -12,18 +12,21 @@ export class AuthService {
 
   async validateUser(email: string, pass: string): Promise<any> {
     const user = await this.usersService.findByEmail(email);
-    
-    // Eğer kullanıcı bulunduysa ve şifre hash'i doğrulandıysa
-    if (user && await bcrypt.compare(pass, user.password)) {
-      const { password, ...result } = user;
+
+    if (user && (await bcrypt.compare(pass, user.password))) {
+      const { ...result } = user;
       return result;
     }
-    
+
     return null;
   }
 
   async login(user: any) {
-    const payload = { username: user.email, sub: user.id };
+    const payload = {
+      email: user.email,
+      sub: user.id,
+      companyId: user.company_id,
+    };
     return {
       user: user,
       access_token: this.jwtService.sign(payload),

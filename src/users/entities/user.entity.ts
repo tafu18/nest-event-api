@@ -10,6 +10,7 @@ import {
   CreateDateColumn,
   BeforeInsert,
   BeforeUpdate,
+  JoinColumn,
 } from 'typeorm';
 import { Transform } from 'class-transformer';
 import { format } from 'date-fns';
@@ -29,7 +30,11 @@ export class User {
   @Column()
   password: string;
 
+  @Column({ nullable: true })
+  company_id: number;
+
   @ManyToOne(() => Company, (company) => company.users)
+  @JoinColumn({ name: 'company_id' })
   company: Company;
 
   @OneToMany(() => Participant, (participant) => participant.user)
@@ -50,7 +55,8 @@ export class User {
   @BeforeInsert()
   @BeforeUpdate()
   async hashPassword() {
-    const passwordIsChanged = this.password && !await bcrypt.compare(this.password, this.password);
+    const passwordIsChanged =
+      this.password && !(await bcrypt.compare(this.password, this.password));
     if (passwordIsChanged) {
       this.password = await bcrypt.hash(this.password, 10);
     }

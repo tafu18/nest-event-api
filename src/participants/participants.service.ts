@@ -4,8 +4,6 @@ import { UpdateParticipantDto } from './dto/update-participant.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Participant } from './entities/participant.entity';
 import { Repository } from 'typeorm';
-import { User } from 'src/users/entities/user.entity';
-import { Event } from 'src/events/entities/event.entity';
 
 @Injectable()
 export class ParticipantsService {
@@ -13,10 +11,11 @@ export class ParticipantsService {
     @InjectRepository(Participant)
     private participantRepository: Repository<Participant>,
   ) {}
-  
+
   async create(createParticipantDto: CreateParticipantDto, UserId: number) {
     createParticipantDto.user_id = UserId;
-    const participant = await this.participantRepository.create(createParticipantDto);
+    const participant =
+      await this.participantRepository.create(createParticipantDto);
     return this.participantRepository.save(participant);
   }
 
